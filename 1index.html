@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión y Tienda</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+            margin: 0;
+            flex-direction: column;
+            color: #fff;
+        }
+        .container {
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+            text-align: center;
+            width: 320px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #00aaff;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: #2a2a2a;
+            color: #fff;
+        }
+        button {
+            background-color: #00aaff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0088cc;
+        }
+        .error {
+            color: #ff4c4c;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+        #carImage {
+            width: 100%;
+            max-width: 300px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="loginContainer" class="container">
+        <h2>Inicio de Sesión</h2>
+        <input type="email" id="email" placeholder="Correo electrónico">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button id="btnLogin">Ingresar</button>
+        <p id="errorMsg" class="error"></p>
+    </div>
+
+    <div id="shopContainer" class="container hidden">
+        <h2>Selecciona una marca</h2>
+        <select id="brandSelect">
+            <option value="">Elige una marca</option>
+            <option value="Honda">Honda</option>
+            <option value="Jeep">Jeep</option>
+            <option value="Audi">Audi</option>
+            <option value="RAM">RAM</option>
+        </select>
+        <div id="modelContainer" class="hidden">
+            <h2>Modelos disponibles</h2>
+            <ul id="modelList"></ul>
+        </div>
+        <img id="carImage" src="" class="hidden" alt="Imagen del modelo seleccionado">
+    </div>
+
+    <script>
+        const brands = {
+            "Honda": ["Modelo1", "Modelo2", "Modelo3", "Modelo4"],
+            "Jeep": ["Modelo1", "Modelo2", "Modelo3", "Modelo4"],
+            "Audi": ["Modelo1", "Modelo2", "Modelo3", "Modelo4"],
+            "RAM": ["Modelo1", "Modelo2", "Modelo3", "Modelo4"]
+        };
+
+        const carImages = {
+            "Modelo1": "https://via.placeholder.com/300?text=Carro+Modelo1",
+            "Modelo2": "https://via.placeholder.com/300?text=Carro+Modelo2",
+            "Modelo3": "https://via.placeholder.com/300?text=Carro+Modelo3",
+            "Modelo4": "https://via.placeholder.com/300?text=Carro+Modelo4"
+        };
+
+        document.getElementById("btnLogin").addEventListener("click", () => {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const errorMsg = document.getElementById("errorMsg");
+
+            if (email === "mauro@" && password === "12345") {
+                document.getElementById("loginContainer").classList.add("hidden");
+                document.getElementById("shopContainer").classList.remove("hidden");
+            } else {
+                errorMsg.innerText = "Usuario o contraseña incorrectos.";
+            }
+        });
+
+        document.getElementById("brandSelect").addEventListener("change", (event) => {
+            const selectedBrand = event.target.value;
+            const modelContainer = document.getElementById("modelContainer");
+            const modelList = document.getElementById("modelList");
+
+            if (selectedBrand && brands[selectedBrand]) {
+                modelContainer.classList.remove("hidden");
+                modelList.innerHTML = brands[selectedBrand].map(model => `<li onclick="showCarImage('${model}')">${model}</li>`).join('');
+            } else {
+                modelContainer.classList.add("hidden");
+                modelList.innerHTML = "";
+            }
+        });
+
+        function showCarImage(model) {
+            const carImage = document.getElementById("carImage");
+            carImage.src = carImages[model] || "";
+            carImage.classList.remove("hidden");
+        }
+    </script>
+</body>
+</html>
+
